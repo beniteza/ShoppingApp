@@ -1,16 +1,16 @@
 from flask import jsonify
-from dao.cartDao import CartDAO
+from dao.wishlistDao import WishlistDAO
 from handler.item import ItemHandler
 
-class CartHandler:
-    def getCartById(self, id):
-        dao = CartDAO()
+class WishlistHandler:
+    def getWishlistById(self, id):
+        dao = WishlistDAO()
         item_handler = ItemHandler()
-        result = dao.getCartById(id) #account id
+        result = dao.getWishlistById(id) #account id
         if result == None:
             return jsonify(Error="NOT FOUND"), 404
         else:
             mapped_result = []
             for r in result:
                 mapped_result.append(item_handler.mapToItemDict(r)) #Should be a loop
-            return jsonify(Cart=mapped_result)
+            return jsonify(Wishlist=mapped_result)
