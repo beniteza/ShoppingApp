@@ -6,6 +6,9 @@ from handler.cart import CartHandler
 from handler.wishlist import WishlistHandler
 from handler.notification import NotificationHandler
 from handler.review import ReviewHandler
+from handler.item import ItemHandler
+from handler.seller import SellerHandler
+from handler.purchase import PurchaseHandler
 
 #ACTIVATE
 app = Flask(__name__)
@@ -70,6 +73,37 @@ def getReviewById(id):
 @app.route("/ShoppingApp/item/review/<int:item_id>/<int:review_id>", methods=['GET', 'POST', 'DELETE'])
 def getSingleReviewById(item_id, review_id):
     return ReviewHandler().getSingleReviewById(item_id, review_id)
+
+#Get items and add new ones
+@app.route("/ShoppingApp/item", methods=['GET', 'POST', 'DELETE'])
+def getAllItem():
+    if request.method == 'GET':
+        # return ItemHandler().getAllItem()
+        pass
+    elif request.method == 'POST':
+        return ItemHandler().insertItem(request.get_json())
+
+@app.route("/ShoppingApp/item/seller/<int:id>", methods=['GET', 'POST', 'DELETE'])
+def getItemSellerById(id):
+    return SellerHandler().getItemSellerById(id)
+
+@app.route("/ShoppingApp/account/purchase/<int:id>", methods=['GET', 'POST', 'DELETE'])
+def getPurchaseById(id):
+    if request.method == 'GET':
+        return PurchaseHandler().getPurchaseById(id)
+    elif request.method == 'POST':
+        return PurchaseHandler().insertPurchase(request.get_json())
+
+@app.route("/ShoppingApp/account/purchase/<int:account_id>/<int:purchase_id>", methods=['GET', 'PUT', 'DELETE'])
+def getSinglePurchaseById(account_id, purchase_id):
+    return PurchaseHandler().getSinglePurchaseById(account_id, purchase_id)
+
+@app.route("/ShoppingApp/account/purchase/item/<int:id>", methods=['GET', 'POST', 'DELETE'])
+def getItemPurchaseById(id):
+    if request.method == 'GET':
+        return PurchaseHandler().getItemPurchaseById(id)
+    elif request.method == 'POST':
+        return PurchaseHandler().insertItemPurchase(request.get_json())
 
 ###########################################
 if __name__ == '__main__':

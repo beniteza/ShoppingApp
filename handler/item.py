@@ -1,5 +1,5 @@
 from flask import jsonify
-#from dao.itemDao import ItemDAO
+from dao.itemDao import ItemDAO
 
 class ItemHandler:
     def mapToItemDict(self, row):
@@ -9,3 +9,6 @@ class ItemHandler:
         result["description"] = row[2]
         result["price"] = row[3]
         return result
+
+    def insertItem(self, form):
+        pass
