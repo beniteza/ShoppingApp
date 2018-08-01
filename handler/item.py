@@ -11,4 +11,16 @@ class ItemHandler:
         return result
 
     def insertItem(self, form):
-        pass
+        if len(form) != 3:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            item_name = form['item_name']
+            description = form['description']
+            price = form['price']
+            if item_name and description and price:
+                dao = ItemDAO()
+                id = dao.insertItem(item_name, description, price)
+                result = self.mapToItemDict([id, item_name, description, price])
+                return jsonify(Item=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400

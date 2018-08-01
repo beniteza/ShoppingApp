@@ -20,7 +20,7 @@ class AccountHandler:
             return jsonify(Account=mapped)
 
     def insertAccount(self, form):
-        if len(form) != 6:
+        if len(form) != 5:
             return jsonify(Error="Malformed post request"), 400
         else:
             first_name = form['first_name']
@@ -46,12 +46,3 @@ class AccountHandler:
         result["password"] = row[5]
         return result
 
-    def deleteAccount(self, form):
-        if len(form) != 1:
-            return jsonify(Error="Malformed post request"), 400
-        else:
-            id = form['id']
-            if id:
-                dao = AccountDAO()
-                dao.deleteAccount(id)
-                return jsonify(DeleteStatus="OK"), 200

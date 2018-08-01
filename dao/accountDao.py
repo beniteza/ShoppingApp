@@ -31,15 +31,8 @@ class AccountDAO:
     def insertAccount(self, first_name, last_name, email, username, password):
         cursor = self.conn.cursor()
         query = "insert into account(first_name, last_name, email, username, password) " \
-                "values (%s, %s, %s, %s, %s, %s) returning account_id;"
+                "values (%s, %s, %s, %s, %s) returning account_id;"
         cursor.execute(query, (first_name, last_name, email, username, password))
         id = cursor.fetchone()[0]
-        self.conn.commit()
-        return id
-
-    def deleteUser(self, id):
-        cursor = self.conn.cursor()
-        query = "delete from account where account_id = %s;"
-        cursor.execute(query, (id,))
         self.conn.commit()
         return id

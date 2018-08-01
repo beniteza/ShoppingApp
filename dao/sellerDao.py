@@ -9,7 +9,7 @@ class SellerDAO:
                                                             pg_config['passwd'])
         self.conn = psycopg2._connect(connection_url)
 
-    def getItemSellerById(self, id):
+    def getItemSupplierById(self, id):
         cursor = self.conn.cursor()
         query = "select seller.seller_id, seller.account_id " \
                 "from seller, supplies, item " \
@@ -23,3 +23,19 @@ class SellerDAO:
         if result == []:
             return None
         return result
+
+    def insertSeller(self, id):
+        cursor = self.conn.cursor()
+        query = "insert into seller(account_id) values (%s) returning seller_id"
+        cursor.execute(query, (id,))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id
+
+    def insertSupplier(self, account_id, seller_id):
+        cursor = self.conn.cursor()
+        query = "insert into supplies(item_id, seller_id) VALUES (%s, %s) returning supplies_id"
+        cursor.execute(query, (account_id, seller_id))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id
