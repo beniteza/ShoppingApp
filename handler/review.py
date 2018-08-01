@@ -29,4 +29,17 @@ class ReviewHandler:
         return result
 
     def insertReview(self, form):
-        pass
+        if len(form) != 4:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            item_id = form['item_id']
+            account_id = form['account_id']
+            rating = form['rating']
+            review_text = form['review_text']
+            if item_id and rating and account_id and review_text:
+                dao = ReviewDAO()
+                id = dao.insertReview(item_id, account_id, rating, review_text)
+                result = self.mapToReviewDict([id, item_id, account_id, rating, review_text])
+                return jsonify(Review=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400

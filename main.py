@@ -43,15 +43,16 @@ def getSeller():
         return SellerHandler().insertSeller(request.get_json())
 
 #Get the items in an account's cart
-@app.route("/ShoppingApp/account/cart/<int:id>", methods=['GET', 'PUT', 'DELETE'])
+@app.route("/ShoppingApp/account/cart/<int:id>", methods=['GET', 'PUT', 'POST'])
 def getCartById(id):
     if request.method == 'GET':
         return CartHandler().getCartById(id)
     elif request.method == 'POST':
         return CartHandler().insertItemCart(request.get_json())
 
+
 #Get the items in an account's wishlist
-@app.route("/ShoppingApp/account/wishlist/<int:id>", methods=['GET', 'PUT', 'DELETE'])
+@app.route("/ShoppingApp/account/wishlist/<int:id>", methods=['GET', 'PUT', 'POST'])
 def getWishlistById(id):
     if request.method == 'GET':
         return WishlistHandler().getWishlistById(id)
@@ -59,12 +60,20 @@ def getWishlistById(id):
         return WishlistHandler().insertItemWishlist(request.get_json())
 
 #Get the notifications of an account
-@app.route("/ShoppingApp/account/notification/<int:id>", methods=['GET', 'PUT', 'DELETE'])
+@app.route("/ShoppingApp/account/notification/<int:id>", methods=['GET', 'PUT', 'POST'])
 def getNotificationById(id):
     if request.method == 'GET':
         return NotificationHandler().getNotificationById(id)
     elif request.method == 'POST':
         return NotificationHandler().insertNotification(request.get_json())
+
+@app.route("/ShoppingApp/account/sent_notification", methods=['GET', 'PUT', 'POST'])
+def getSentNotification():
+    if request.method == 'GET':
+        #return NotificationHandler().getNotificationById(id)
+        pass
+    elif request.method == 'POST':
+        return NotificationHandler().insertSentNotification(request.get_json())
 
 @app.route("/ShoppingApp/account/notification/<int:account_id>/<int:notification_id>", methods=['GET', 'PUT', 'DELETE'])
 def getSingleNotificationById(account_id, notification_id):
@@ -110,6 +119,14 @@ def getPurchaseById(id):
         return PurchaseHandler().getPurchaseById(id)
     elif request.method == 'POST':
         return PurchaseHandler().insertPurchase(request.get_json())
+
+@app.route("/ShoppingApp/account/purchase/item", methods=['GET', 'POST', 'DELETE'])
+def getItemPurchase():
+    if request.method == 'GET':
+        #return PurchaseHandler().getPurchaseById(id)
+        pass
+    elif request.method == 'POST':
+        return PurchaseHandler().insertItemPurchase(request.get_json())
 
 @app.route("/ShoppingApp/account/purchase/<int:account_id>/<int:purchase_id>", methods=['GET', 'PUT', 'DELETE'])
 def getSinglePurchaseById(account_id, purchase_id):

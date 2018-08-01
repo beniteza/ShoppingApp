@@ -36,5 +36,20 @@ class NotificationDAO:
             return None
         return result
 
-    def insertNotification(self, form):
-        pass
+    def insertNotification(self, subject, message, sender_id):
+        cursor = self.conn.cursor()
+        query = "insert into notification(subject, message, sender_id) " \
+                "VALUES (%s, %s, %s) returning notification_id;"
+        cursor.execute(query, (subject, message, sender_id))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id
+
+    def insertSentNotification(self, notification_id, receiver_id):
+        cursor = self.conn.cursor()
+        query = "insert into sent_notification(notification_id, receiver_id) " \
+                "VALUES (%s, %s) returning sent_notification_id;"
+        cursor.execute(query, (notification_id, receiver_id))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id

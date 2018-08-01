@@ -22,3 +22,12 @@ class CartDAO:
         if result == []:
             return None
         return result
+
+    def insertItemCart(self, item_id, quantity, account_id):
+        cursor = self.conn.cursor()
+        query = "insert into cart_item( item_id, quantity, account_id) " \
+                "VALUES (%s, %s, %s) returning cart_item_id;"
+        cursor.execute(query, (item_id, quantity, account_id))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id

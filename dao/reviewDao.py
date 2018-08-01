@@ -29,5 +29,11 @@ class ReviewDAO:
             return None
         return result
 
-    def insertReview(self, form):
-        pass
+    def insertReview(self, item_id, account_id, rating, review_text):
+        cursor = self.conn.cursor()
+        query = "insert into review(item_id, account_id, rating, review_text) " \
+                "VALUES (%s, %s, %s, %s) returning review_id;"
+        cursor.execute(query, (item_id, account_id, rating, review_text))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id

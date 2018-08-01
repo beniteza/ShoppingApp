@@ -29,8 +29,23 @@ class PurchaseDAO:
             return None
         return result
 
-    def insertPurchase(self, form):
-        pass
+    def insertPurchase(self, account_id, purchase_date):
+        cursor = self.conn.cursor()
+        query = "insert into purchase(account_id, purchase_date) " \
+                "VALUES (%s, %s) returning purchase_id;"
+        cursor.execute(query, (account_id, purchase_date))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id
+
+    def insertItemPurchase(self, purchase_id, item_id, quantity, seller_id, price):
+        cursor = self.conn.cursor()
+        query = "insert into item_purchase(purchase_id, item_id, quantity, seller_id, price) " \
+                "VALUES (%s, %s, %s, %s, %s) returning item_purchase_id;"
+        cursor.execute(query, (purchase_id, item_id, quantity, seller_id, price))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id
 
     def getItemPurchaseById(self, id):
         cursor = self.conn.cursor()
@@ -44,6 +59,3 @@ class PurchaseDAO:
         if result == []:
             return None
         return result
-
-    def insertItemPurchase(self, form):
-        pass

@@ -22,3 +22,12 @@ class WishlistDAO:
         if result == []:
             return None
         return result
+
+    def insertItemWishlist(self, item_id, account_id):
+        cursor = self.conn.cursor()
+        query = "insert into wishlist_item(item_id, account_id) " \
+                "VALUES (%s, %s) returning wishlist_item_id;"
+        cursor.execute(query, (item_id, account_id))
+        id = cursor.fetchone()[0]
+        self.conn.commit()
+        return id
